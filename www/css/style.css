@@ -1,1 +1,14 @@
 /* Empty. Add your own CSS if you like */
+
+.scroll-content {
+  background: url(../img/bg.png) no-repeat center center fixed;
+  background-size: cover;
+}
+
+.login-header {
+  color: white;
+  border-bottom: solid 2px #000000;
+  border-bottom-color: white;
+  display: inline;
+  padding-bottom: 3px;
+}

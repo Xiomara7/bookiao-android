@@ -28,3 +28,5 @@ build/Release
 
 # Users Environment Variables
 .lock-wscript
+
+.DS_Store
