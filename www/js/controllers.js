@@ -17,6 +17,16 @@ angular.module('starter.controllers', ['ionic'])
 })
 
 .controller('TabCtrl', function($scope, $ionicModal, $location) {
+
+  var init = function() {
+    if (window.localStorage['token'] === undefined) {
+      $location.path("/login");
+    }
+  }
+  // init();
+})
+
+.controller('DashCtrl', function($scope, $ionicModal) {
   $ionicModal.fromTemplateUrl('create-booking.html', {
     scope: $scope,
     animation: 'slide-in-up'
