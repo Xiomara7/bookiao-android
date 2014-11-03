@@ -1,14 +1,40 @@
 /* Empty. Add your own CSS if you like */
 
 .scroll-content {
-  background: url(../img/bg.png) no-repeat center center fixed;
-  background-size: cover;
+  background-color:#224656;
 }
 
 .login-header {
   color: white;
-  border-bottom: solid 2px #000000;
-  border-bottom-color: white;
-  display: inline;
+  font-family: open sans;
+  font-weight: light;
   padding-bottom: 3px;
+  text-align: center;
+}
+
+.scroll{
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 555px;
+}
+
+.list.list-inset{
+
+	border-radius: 5px;
+	text-align: center;
+	padding-right: 0px;
+}
+
+.button.button-block{
+
+	max-width: 95%!important;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.button.button-balanced{
+
+	background-color: #00B287!important;
+	border: 0px;
+	border-radius: 5px;
 }
