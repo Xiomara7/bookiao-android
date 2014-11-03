@@ -1,9 +1,5 @@
 /* Empty. Add your own CSS if you like */
 
-.scroll-content {
-  background-color:#224656;
-}
-
 .login-header {
   color: white;
   font-family: open sans;
@@ -54,7 +50,7 @@
 
 .scroll-content{
 
-	background-color: #E4E4E4!important;
+	background-color: #E4E4E4;
 }
 
 .card{
@@ -114,4 +110,11 @@ box-shadow:         0px 2px 4px 0px rgba(0,0,0,0.09);
 .circular img {
 	opacity: 0;
 	filter: alpha(opacity=0);
+}
+
+.tabs-balanced > .tabs, .tabs.tabs-balanced{
+
+	background-color: #323C3E;
+	height: 53px;
+	border-color: #323C3E;
 }
