@@ -17,22 +17,11 @@ angular.module('starter.controllers', ['ionic'])
 })
 
 .controller('TabCtrl', function($scope, $ionicModal, $location) {
-
-  var init = function() {
-    if (window.localStorage['token'] === undefined) {
-      $location.path("/login");
-    }
-  }
-  // init();
-})
-
-.controller('DashCtrl', function($scope, $ionicModal) {
   $ionicModal.fromTemplateUrl('create-booking.html', {
     scope: $scope,
     animation: 'slide-in-up'
   }).then(function(modal) {
     $scope.modal = modal;
-    console.log('hello');
   });
   $scope.openModal = function() {
     console.log('hello');
@@ -45,13 +34,12 @@ angular.module('starter.controllers', ['ionic'])
   $scope.$on('$destroy', function() {
     $scope.modal.remove();
   });
-
   var init = function() {
     if (window.localStorage['token'] === undefined) {
       $location.path("/login");
     }
   }
-  init();
+  // init();
 })
 
 .controller('DashCtrl', function($scope, $ionicModal) {
