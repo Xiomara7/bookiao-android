@@ -21,6 +21,16 @@ angular.module('starter.controllers', ['ionic'])
   $scope.register = function() {
     $location.path("/register/business");
   }
+
+  // If user is logged in redirect to home page
+  // TODO: Actually query the API to verify that token is still valid
+  var init = function() {
+    if (window.localStorage['token'] !== undefined) {
+      $location.path("/tab/dash");
+    }
+  }
+  // init();
+
 })
 
 .controller('TabCtrl', function($scope, $ionicModal, $location) {
@@ -67,7 +77,7 @@ angular.module('starter.controllers', ['ionic'])
 })
 
 // Abstract control for registration that handles all of the actual registration
-// logic.
+// logic. TODO: All sorts of sanity checks and input validations
 .controller('RegisterCtrl', function($scope, $location, $http) {
 
   // Function to go back to login
