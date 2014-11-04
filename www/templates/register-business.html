@@ -1,42 +1,42 @@
 <ion-view title="Negocio">
   <ion-nav-buttons side="right">
-    <div class="button button-clear" ng-click="login()"><span class="icon ion-close"></span></div>
+    <div class="button button-clear" ng-click="back()"><span class="icon ion-close"></span></div>
   </ion-nav-buttons>
   <ion-content has-footer="true" style="background-color:#DDD;!important">
 
     <div class="list list-inset">
       <label class="item item-input">
-        <input ng-model="$parent.email" type="text" placeholder="Nombre del negocio" style="text-align: center;">
+        <input ng-model="$parent.user.name" type="text" placeholder="Nombre del negocio" style="text-align: center;">
       </label>
     </div>
 
     <div class="list list-inset">
       <label class="item item-input">
-        <input ng-model="$parent.email" type="text" placeholder="Correo Electrónico" style="text-align: center;">
+        <input ng-model="$parent.user.email" type="text" placeholder="Correo Electrónico" style="text-align: center;">
       </label>
     </div>
 
     <div class="list list-inset">
       <label class="item item-input">
-        <input ng-model="$parent.email" type="password" placeholder="Contraseña" style="text-align: center;">
+        <input ng-model="$parent.user.password" type="password" placeholder="Contraseña" style="text-align: center;">
       </label>
     </div>
 
     <div class="list list-inset">
       <label class="item item-input">
-        <input ng-model="$parent.email" type="text" placeholder="Nombre del dueño" style="text-align: center;">
+        <input ng-model="$parent.user.manager_name" type="text" placeholder="Nombre del dueño" style="text-align: center;">
       </label>
     </div>
 
     <div class="list list-inset">
       <label class="item item-input">
-        <input ng-model="$parent.email" type="text" placeholder="Número telefónico" style="text-align: center;">
+        <input ng-model="$parent.user.phone_number" type="text" placeholder="Número telefónico" style="text-align: center;">
       </label>
     </div>
 
     <div class="list list-inset">
       <label class="item item-input">
-        <input ng-model="$parent.email" type="text" placeholder="Dirección" style="text-align: center;">
+        <input ng-model="$parent.user.location" type="text" placeholder="Dirección" style="text-align: center;">
       </label>
     </div>
 
