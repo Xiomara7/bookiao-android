@@ -84,10 +84,42 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       }
     })
 
-    .state('create-booking', {
-      url: '/create-booking',
-      templateUrl: 'create-booking.html'
-    });
+    .state('register', {
+      url: '/register',
+      abstract: true,
+      templateUrl: 'templates/register.html',
+      controller: 'RegisterCtrl'
+    })
+
+    .state('register.business', {
+      url: '/business',
+      views: {
+        'register-business': {
+          templateUrl: 'templates/register-business.html',
+          controller: 'RegisterBusinessCtrl'
+        }
+      }
+    })
+
+    .state('register.employee', {
+      url: '/employee',
+      views: {
+        'register-employee': {
+          templateUrl: 'templates/register-employee.html',
+          controller: 'RegisterEmployeeCtrl'
+        }
+      }
+    })
+
+    .state('register.client', {
+      url: '/client',
+      views: {
+        'register-client': {
+          templateUrl: 'templates/register-client.html',
+          controller: 'RegisterClientCtrl'
+        }
+      }
+    })
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');

@@ -1,6 +1,7 @@
 angular.module('starter.controllers', ['ionic'])
 
 .controller('LoginCtrl', function($scope, $http, $location) {
+
   // Function that handles login
   $scope.login = function() {
     $http.post('http://bookiao-api.herokuapp.com/api-token-auth/', {"email": $scope.email, "password": $scope.password}).
@@ -13,6 +14,11 @@ angular.module('starter.controllers', ['ionic'])
       error(function(data, status, headers, config) {
         alert("Error during login.");
       });
+  }
+
+  // Function that redirects to register
+  $scope.register = function() {
+    $location.path("/register/business");
   }
 })
 
@@ -57,4 +63,24 @@ angular.module('starter.controllers', ['ionic'])
     console.log('hello');
     $scope.modal.show();
   };
+})
+
+.controller('RegisterCtrl', function($scope, $location) {
+  $scope.login = function() {
+    $location.path("/login");
+  }
+})
+
+.controller('RegisterBusinessCtrl', function($scope, $location) {
+
+})
+
+.controller('RegisterEmployeeCtrl', function($scope, $location) {
+
+})
+
+.controller('RegisterClientCtrl', function($scope, $location) {
+
 });
+
+
