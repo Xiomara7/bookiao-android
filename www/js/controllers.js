@@ -84,7 +84,6 @@ angular.module('starter.controllers', ['ionic'])
   };
 
   $scope.createUser = function() {
-    $scope.user = JSON.parse(window.localStorage['user']);
     $http.post('http://bookiao-api.herokuapp.com/register/', $scope.user).
       success($scope.login).
       error(function(data, status, headers, config) {
@@ -102,27 +101,29 @@ angular.module('starter.controllers', ['ionic'])
       });
   }
 
+  $scope.user = {};
+
 })
 
 .controller('RegisterBusinessCtrl', function($scope, $location) {
-
-  $scope.user = { 'objectUrl': 'http://bookiao-api.herokuapp.com/businesses/'};
-
-  $scope.register = function() {
-    delete window.localStorage['user'];
-    window.localStorage['user'] = JSON.stringify($scope.user);
-
-    $scope.createUser();
-  }
-
+  $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/businesses/';
 })
 
-.controller('RegisterEmployeeCtrl', function($scope, $location) {
+.controller('RegisterEmployeeCtrl', function($scope, $location, Business) {
+  $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/employees/';
+  $scope.businesses = [];
+
+  var handleSuccess = function(data, status) {
+    $scope.businesses = data.results;
+    console.log($scope.businesses);
+  }
+
+  Business.all().success(handleSuccess);
 
 })
 
 .controller('RegisterClientCtrl', function($scope, $location) {
-
+  $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/clients/';
 });
 
 

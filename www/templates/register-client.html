@@ -6,28 +6,28 @@
 
     <div class="list list-inset">
       <label class="item item-input">
-        <input ng-model="$parent.email" type="text" placeholder="Nombre" style="text-align: center;">
+        <input ng-model="$parent.user.name" type="text" placeholder="Nombre" style="text-align: center;">
       </label>
     </div>
 
     <div class="list list-inset">
       <label class="item item-input">
-        <input ng-model="$parent.email" type="text" placeholder="Correo Electrónico" style="text-align: center;">
+        <input ng-model="$parent.user.email" type="text" placeholder="Correo Electrónico" style="text-align: center;">
       </label>
     </div>
 
     <div class="list list-inset">
       <label class="item item-input">
-        <input ng-model="$parent.email" type="password" placeholder="Contraseña" style="text-align: center;">
+        <input ng-model="$parent.user.password" type="password" placeholder="Contraseña" style="text-align: center;">
       </label>
     </div>
 
     <div class="list list-inset">
       <label class="item item-input">
-        <input ng-model="$parent.email" type="text" placeholder="Número telefónico" style="text-align: center;">
+        <input ng-model="$parent.user.phone_number" type="text" placeholder="Número telefónico" style="text-align: center;">
       </label>
     </div>
 
-    <button class="button button-block button-balanced" style="background-color:#34A3DB!important;" ng-click="register()">Registrame</button>
+    <button class="button button-block button-balanced" style="background-color:#34A3DB!important;" ng-click="createUser()">Registrame</button>
   </ion-content>
 </ion-view>
