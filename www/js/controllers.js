@@ -6,6 +6,7 @@ angular.module('starter.controllers', ['ionic'])
   $scope.login = function() {
     $http.post('http://bookiao-api.herokuapp.com/api-token-auth/', {"email": $scope.email, "password": $scope.password}).
       success(function(data, status, headers, config) {
+        // On success save the token and redirect to home page
         if (status == 200) {
           window.localStorage['token'] = data.token;
           $location.path("/tab/dash");
@@ -65,14 +66,21 @@ angular.module('starter.controllers', ['ionic'])
   };
 })
 
+// Abstract control for registration that handles all of the actual registration
+// logic.
 .controller('RegisterCtrl', function($scope, $location, $http) {
+
+  // Function to go back to login
   $scope.back = function() {
     $location.path("/login");
   };
 
+  // Function to login after actually creating a user.
   $scope.login = function() {
     $http.post('http://bookiao-api.herokuapp.com/api-token-auth/', {"email": $scope.user.email, "password": $scope.user.password}).
       success(function(data, status, headers, config) {
+        // After sucesful login save the token and create the actual object
+        // i.e. Business, Employee or Client
         if (status == 200) {
           window.localStorage['token'] = data.token;
           $scope.createObject();
@@ -83,16 +91,21 @@ angular.module('starter.controllers', ['ionic'])
       });
   };
 
+  // Function that creates the user in the db.
   $scope.createUser = function() {
     $http.post('http://bookiao-api.herokuapp.com/register/', $scope.user).
+      // On success attempt to login.
       success($scope.login).
       error(function(data, status, headers, config) {
         alert('Error creating user. Please contact Christian.');
       });
   }
 
+  // Function that actually creates the object in the server
+  // Note: Login must be succesful for this to work.
   $scope.createObject = function() {
     $http.post($scope.user.objectUrl, $scope.user, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}}).
+      // On success redirect to the home page
       success(function(data, status, headers, config) {
         $location.path("/tab/dash");
       }).
@@ -101,27 +114,31 @@ angular.module('starter.controllers', ['ionic'])
       });
   }
 
+  // Empty user object to store the input information
   $scope.user = {};
 
 })
 
+// Controller for registering Businesses
 .controller('RegisterBusinessCtrl', function($scope, $location) {
   $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/businesses/';
 })
 
+// Controller for registering Employees
 .controller('RegisterEmployeeCtrl', function($scope, $location, Business) {
   $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/employees/';
-  $scope.businesses = [];
 
+  // Populates the business select input
+  $scope.businesses = [];
   var handleSuccess = function(data, status) {
     $scope.businesses = data.results;
     console.log($scope.businesses);
   }
-
   Business.all().success(handleSuccess);
 
 })
 
+// Controller for registering Clients
 .controller('RegisterClientCtrl', function($scope, $location) {
   $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/clients/';
 });
