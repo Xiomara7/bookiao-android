@@ -9,7 +9,7 @@ angular.module('starter.controllers', ['ionic'])
         // On success save the token and redirect to home page
         if (status == 200) {
           window.localStorage['token'] = data.token;
-          $location.path("/tab/dash");
+          $location.path("/tab/citas");
         };
       }).
       error(function(data, status, headers, config) {
@@ -26,7 +26,7 @@ angular.module('starter.controllers', ['ionic'])
   // TODO: Actually query the API to verify that token is still valid
   var init = function() {
     if (window.localStorage['token'] !== undefined) {
-      $location.path("/tab/dash");
+      $location.path("/tab/citas");
     }
   }
   // init();
@@ -59,7 +59,7 @@ angular.module('starter.controllers', ['ionic'])
   // init();
 })
 
-.controller('DashCtrl', function($scope, $ionicModal) {
+.controller('CitasCtrl', function($scope, $ionicModal) {
 })
 
 .controller('FriendsCtrl', function($scope, Friends) {
@@ -117,7 +117,7 @@ angular.module('starter.controllers', ['ionic'])
     $http.post($scope.user.objectUrl, $scope.user, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}}).
       // On success redirect to the home page
       success(function(data, status, headers, config) {
-        $location.path("/tab/dash");
+        $location.path("/tab/citas");
       }).
       error(function(data, status, headers, config) {
         alert('Error creating object. Please contact Christian.');

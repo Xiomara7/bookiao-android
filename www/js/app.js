@@ -45,12 +45,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
     // Each tab has its own nav history stack:
 
-    .state('tab.dash', {
-      url: '/dash',
+    .state('tab.citas', {
+      url: '/citas',
       views: {
-        'tab-dash': {
-          templateUrl: 'templates/tab-dash.html',
-          controller: 'DashCtrl'
+        'tab-citas': {
+          templateUrl: 'templates/tab-citas.html',
+          controller: 'CitasCtrl'
         }
       }
     })
