@@ -18,7 +18,7 @@ angular.module('starter.controllers', ['ionic'])
   }
 
   $scope.findUserType = function() {
-    $http.post('http://bookiao-api.herokuapp.com/api-token-auth/usertype/', {"email": $scope.email}).
+    $http.get('http://bookiao-api.herokuapp.com/user-type/?email=' + $scope.email).
       success(function(data, status) {
         window.localStorage['userType'] = data.userType;
         $scope.login();
