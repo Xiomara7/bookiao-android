@@ -17,6 +17,17 @@ angular.module('starter.controllers', ['ionic'])
       });
   }
 
+  $scope.findUserType = function() {
+    $http.post('http://bookiao-api.herokuapp.com/api-token-auth/usertype/', {"email": $scope.email}).
+      success(function(data, status) {
+        window.localStorage['userType'] = data.userType;
+        $scope.login();
+      }).
+      error(function(data, status) {
+        alert('Error encontrando al usuario.');
+      })
+  }
+
   // Function that redirects to register
   $scope.register = function() {
     $location.path("/register/business");
@@ -132,6 +143,7 @@ angular.module('starter.controllers', ['ionic'])
 // Controller for registering Businesses
 .controller('RegisterBusinessCtrl', function($scope, $location) {
   $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/businesses/';
+  window.localStorage['userType'] = 'business';
 })
 
 // Controller for registering Employees
@@ -146,11 +158,13 @@ angular.module('starter.controllers', ['ionic'])
   }
   Business.all().success(handleSuccess);
 
+  window.localStorage['userType'] = 'employee';
 })
 
 // Controller for registering Clients
 .controller('RegisterClientCtrl', function($scope, $location) {
   $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/clients/';
+  window.localStorage['userType'] = 'client';
 });
 
 
