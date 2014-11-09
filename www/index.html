@@ -25,11 +25,66 @@
 
   <script id="create-booking.html" type="text/ng-template">
     <ion-modal-view>
-      <ion-header-bar>
-        <h1 class="title">My Modal title</h1>
+      <ion-header-bar class="bar-balanced bar bar-header nav-bar nav-title-slide-full disable-user-behavior  no-animation" style="background-color:#00B287;">
+        <h1 class="title">Crear Cita</h1>
+        <div class="buttons right-buttons"> <span class="">
+          <a ng-click="closeModal()" class="button button-icon ion-close"></a>
+        </span></div>
       </ion-header-bar>
       <ion-content>
-        Hello!
+        <div class="list list-inset">
+          <label class="item item-input">
+          <span class="input-label">Date</span>
+          <input type="date">
+        </label>
+        </div>
+
+        <div class="list list-inset">
+           <input ng-model="$parent.email" type="text" placeholder="12:00 am" style="">
+      </label>
+        </div>
+
+        <div class="list list-inset">
+          <ul class="list">
+
+            <li class="item item-checkbox">
+               <label class="checkbox">
+                 <input type="checkbox">
+               </label>
+               Lavado de pelo
+            </li>
+
+            <li class="item item-checkbox">
+               <label class="checkbox">
+                 <input type="checkbox">
+               </label>
+               Corte e pelo
+            </li>
+
+            <li class="item item-checkbox">
+               <label class="checkbox">
+                 <input type="checkbox">
+               </label>
+               Arreglo e balba
+            </li>
+
+          </ul>
+        </div>
+
+        <div class="list list-inset">
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Empleado
+            </div>
+            <select>
+              <option>Encarnacioooo ooooon</option>
+              <option selected>Cuanta la mela</option>
+              <option>Deborame Este</option>
+            </select>
+          </label>
+        </div>
+
+        <button class="button button-block button-balanced" style="background-color:#34A3DB!important;" ng-click="createUser()">Crear</button>
       </ion-content>
     </ion-modal-view>
   </script>
