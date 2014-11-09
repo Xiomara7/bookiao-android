@@ -44,7 +44,7 @@ angular.module('starter.controllers', ['ionic'])
 
 })
 
-.controller('TabCtrl', function($scope, $ionicModal, $location) {
+.controller('TabCtrl', function($scope, $ionicModal, $location, $http) {
   $ionicModal.fromTemplateUrl('create-booking.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -52,7 +52,6 @@ angular.module('starter.controllers', ['ionic'])
     $scope.modal = modal;
   });
   $scope.openModal = function() {
-    console.log('hello');
     $scope.modal.show();
   };
   $scope.closeModal = function() {
@@ -62,29 +61,44 @@ angular.module('starter.controllers', ['ionic'])
   $scope.$on('$destroy', function() {
     $scope.modal.remove();
   });
+
+  $scope.loadEmployees = function() {
+    $http.get('http://bookiao-api.herokuapp.com/employees/').
+      success(function(data, status) {
+        $scope.employees = data.results;
+      }).
+      error(function(data, status) {
+        console.log('Error loading employees.');
+      });
+  };
+
+  $scope.loadServices = function() {
+    $http.get('http://bookiao-api.herokuapp.com/services/').
+      success(function(data, status) {
+        $scope.services = data.results;
+      }).
+      error(function(data, status) {
+        console.log('Error loading services.');
+      });
+  };
+
   var init = function() {
     if (window.localStorage['token'] === undefined) {
       $location.path("/login");
     }
+    $scope.loadEmployees();
+    $scope.loadServices();
   }
-  // init();
+  init();
 })
 
 .controller('CitasCtrl', function($scope, $ionicModal) {
 })
 
 .controller('FriendsCtrl', function($scope) {
-  $scope.openModal = function() {
-    console.log('hello');
-    $scope.modal.show();
-  };
 })
 
 .controller('AccountCtrl', function($scope) {
-  $scope.openModal = function() {
-    console.log('hello');
-    $scope.modal.show();
-  };
 })
 
 // Abstract control for registration that handles all of the actual registration

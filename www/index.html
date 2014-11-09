@@ -40,32 +40,18 @@
         </div>
 
         <div class="list list-inset">
-           <input ng-model="$parent.email" type="text" placeholder="12:00 am" style="">
+           <input type="text" placeholder="Hora: 12:00 AM" style="text-align: center;">
       </label>
         </div>
 
         <div class="list list-inset">
           <ul class="list">
 
-            <li class="item item-checkbox">
+            <li class="item item-checkbox" ng-repeat="service in services">
                <label class="checkbox">
-                 <input type="checkbox">
+                 <input type="checkbox" name="service" value="service.id">
                </label>
-               Lavado de pelo
-            </li>
-
-            <li class="item item-checkbox">
-               <label class="checkbox">
-                 <input type="checkbox">
-               </label>
-               Corte e pelo
-            </li>
-
-            <li class="item item-checkbox">
-               <label class="checkbox">
-                 <input type="checkbox">
-               </label>
-               Arreglo e balba
+               {{ service.name }}
             </li>
 
           </ul>
@@ -77,9 +63,7 @@
               Empleado
             </div>
             <select>
-              <option>Encarnacioooo ooooon</option>
-              <option selected>Cuanta la mela</option>
-              <option>Deborame Este</option>
+                <option ng-repeat="employee in employees" value="{{ employee.id }}">{{ employee.name }}</option>
             </select>
           </label>
         </div>
