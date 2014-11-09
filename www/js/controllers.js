@@ -62,7 +62,7 @@ angular.module('starter.controllers', ['ionic'])
 .controller('CitasCtrl', function($scope, $ionicModal) {
 })
 
-.controller('FriendsCtrl', function($scope, Friends) {
+.controller('FriendsCtrl', function($scope) {
   $scope.openModal = function() {
     console.log('hello');
     $scope.modal.show();
