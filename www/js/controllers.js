@@ -72,6 +72,16 @@ angular.module('starter.controllers', ['ionic'])
       });
   };
 
+  $scope.loadClients = function() {
+    $http.get('http://bookiao-api.herokuapp.com/clients/').
+      success(function(data, status) {
+        $scope.clients = data.results;
+      }).
+      error(function(data, status) {
+        console.log('Error loading clients.');
+      });
+  };
+
   $scope.loadServices = function() {
     $http.get('http://bookiao-api.herokuapp.com/services/').
       success(function(data, status) {
@@ -87,9 +97,12 @@ angular.module('starter.controllers', ['ionic'])
       $location.path("/login");
     }
     $scope.loadEmployees();
+    $scope.loadClients();
     $scope.loadServices();
   }
   init();
+
+  $scope.userType = window.localStorage['userType'];
 })
 
 .controller('CitasCtrl', function($scope, $ionicModal) {

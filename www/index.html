@@ -34,7 +34,7 @@
       <ion-content>
         <div class="list list-inset">
           <label class="item item-input">
-          <span class="input-label">Date</span>
+          <span class="input-label">Fecha</span>
           <input type="date">
         </label>
         </div>
@@ -57,13 +57,24 @@
           </ul>
         </div>
 
-        <div class="list list-inset">
+        <div class="list list-inset" ng-if="userType == 'client'">
           <label class="item item-input item-select">
             <div class="input-label">
               Empleado
             </div>
             <select>
                 <option ng-repeat="employee in employees" value="{{ employee.id }}">{{ employee.name }}</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="list list-inset" ng-if="userType == 'employee'">
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Cliente
+            </div>
+            <select>
+                <option ng-repeat="client in clients" value="{{ client.id }}"> {{ client.name }}</option>
             </select>
           </label>
         </div>
