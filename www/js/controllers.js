@@ -20,7 +20,7 @@ angular.module('starter.controllers', ['ionic'])
   $scope.findUserType = function() {
     $http.get('http://bookiao-api.herokuapp.com/user-type/?email=' + $scope.email).
       success(function(data, status) {
-        window.localStorage['userType'] = data.userType;
+        window.localStorage['user'] = JSON.stringify(data);
         $scope.login();
       }).
       error(function(data, status) {
@@ -86,6 +86,9 @@ angular.module('starter.controllers', ['ionic'])
     $http.get('http://bookiao-api.herokuapp.com/services/').
       success(function(data, status) {
         $scope.services = data.results;
+        for (var i = 0; i < $scope.services.length; i++) {
+          $scope.services.checked = false;
+        };
       }).
       error(function(data, status) {
         console.log('Error loading services.');
@@ -102,7 +105,27 @@ angular.module('starter.controllers', ['ionic'])
   }
   init();
 
-  $scope.userType = window.localStorage['userType'];
+  $scope.user = JSON.parse(window.localStorage['user']);
+
+  $scope.booking = {}
+
+  $scope.createBooking = function() {
+    if ($scope.user.userType == 'client') {
+      $scope.booking.client = $scope.user.id.toString();
+    } else {
+      $scope.booking.employees = $scope.user.id.toString();
+    }
+    $scope.booking.services = [$scope.booking.services];
+    console.log($scope.booking);
+
+    $http.post('https://bookiao-api.herokuapp.com/appointments/', $scope.booking, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}}).
+      success(function(data, status) {
+        alert('La cita se creo exitosamente.');
+      }).
+      error(function(data, status) {
+        alert('Error creando la cita.');
+      });
+  };
 })
 
 .controller('CitasCtrl', function($scope, $ionicModal) {
@@ -143,10 +166,21 @@ angular.module('starter.controllers', ['ionic'])
   $scope.createUser = function() {
     $http.post('http://bookiao-api.herokuapp.com/register/', $scope.user).
       // On success attempt to login.
-      success($scope.login).
+      success($scope.findUserType).
       error(function(data, status, headers, config) {
         alert('Error creating user. Please contact Christian.');
       });
+  }
+
+  $scope.findUserType = function() {
+    $http.get('http://bookiao-api.herokuapp.com/user-type/?email=' + $scope.user.email).
+      success(function(data, status) {
+        window.localStorage['user'] = JSON.stringify(data);
+        $scope.login();
+      }).
+      error(function(data, status) {
+        alert('Error encontrando al usuario.');
+      })
   }
 
   // Function that actually creates the object in the server
@@ -170,7 +204,6 @@ angular.module('starter.controllers', ['ionic'])
 // Controller for registering Businesses
 .controller('RegisterBusinessCtrl', function($scope, $location) {
   $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/businesses/';
-  window.localStorage['userType'] = 'business';
 })
 
 // Controller for registering Employees
@@ -184,14 +217,11 @@ angular.module('starter.controllers', ['ionic'])
     console.log($scope.businesses);
   }
   Business.all().success(handleSuccess);
-
-  window.localStorage['userType'] = 'employee';
 })
 
 // Controller for registering Clients
 .controller('RegisterClientCtrl', function($scope, $location) {
   $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/clients/';
-  window.localStorage['userType'] = 'client';
 });
 
 

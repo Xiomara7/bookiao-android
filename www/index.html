@@ -35,51 +35,49 @@
         <div class="list list-inset">
           <label class="item item-input">
           <span class="input-label">Fecha</span>
-          <input type="date">
+          <input type="date" ng-model="booking.day">
         </label>
         </div>
 
         <div class="list list-inset">
-           <input type="text" placeholder="Hora: 12:00 AM" style="text-align: center;">
+           <input type="text" placeholder="Hora: 12:00 AM" style="text-align: center;" ng-model="booking.time">
       </label>
         </div>
 
         <div class="list list-inset">
-          <ul class="list">
-
-            <li class="item item-checkbox" ng-repeat="service in services">
-               <label class="checkbox">
-                 <input type="checkbox" name="service" value="service.id">
-               </label>
-               {{ service.name }}
-            </li>
-
-          </ul>
+          <label class="item item-input item-select">
+            <div class="input-label">
+              Servicio
+            </div>
+            <select ng-model="booking.services">
+                <option ng-repeat="service in services" value="{{ service.id }}">{{ service.name }}</option>
+            </select>
+          </label>
         </div>
 
-        <div class="list list-inset" ng-if="userType == 'client'">
+        <div class="list list-inset" ng-if="user.userType == 'client'">
           <label class="item item-input item-select">
             <div class="input-label">
               Empleado
             </div>
-            <select>
+            <select ng-model="booking.employee">
                 <option ng-repeat="employee in employees" value="{{ employee.id }}">{{ employee.name }}</option>
             </select>
           </label>
         </div>
 
-        <div class="list list-inset" ng-if="userType == 'employee'">
+        <div class="list list-inset" ng-if="user.userType == 'employee'">
           <label class="item item-input item-select">
             <div class="input-label">
               Cliente
             </div>
-            <select>
+            <select ng-model="booking.client">
                 <option ng-repeat="client in clients" value="{{ client.id }}"> {{ client.name }}</option>
             </select>
           </label>
         </div>
 
-        <button class="button button-block button-balanced" style="background-color:#34A3DB!important;" ng-click="createUser()">Crear</button>
+        <button class="button button-block button-balanced" style="background-color:#34A3DB!important;" ng-click="createBooking()">Crear</button>
       </ion-content>
     </ion-modal-view>
   </script>
