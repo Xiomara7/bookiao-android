@@ -128,7 +128,7 @@ angular.module('starter.controllers', ['ionic'])
   };
 })
 
-.controller('CitasCtrl', function($scope, $ionicModal, $http) {
+.controller('CitasCtrl', function($scope, $http) {
 
   $scope.currentAppointments = [];
 
@@ -148,11 +148,11 @@ angular.module('starter.controllers', ['ionic'])
     $http.get('http://bookiao-api.herokuapp.com/appointments/?day='+today+'&'+$scope.user.userType+'='+$scope.user.id+'&ordering=time').
       success(function(data, status) {
         $scope.currentAppointments = data.results;
-        console.log(data);
       }).
       error(function(data, status) {
-        console.log('Error buscando citas.');
-      });
+        console.log('Error buscando citas del día.');
+      }
+    );
 
   }
 
@@ -160,7 +160,24 @@ angular.module('starter.controllers', ['ionic'])
 
 })
 
-.controller('FriendsCtrl', function($scope) {
+.controller('HistoryCtrl', function($scope, $http) {
+
+  $scope.pastAppointments = [];
+
+  $scope.getPastAppointments = function() {
+    $http.get('http://bookiao-api.herokuapp.com/appointments/?'+$scope.user.userType+'='+$scope.user.id+'&ordering=time').
+      success(function(data, status) {
+        $scope.pastAppointments = data.results;
+        console.log(data);
+      }).
+      error(function(data, status) {
+        console.log('Error buscando citas pasadas.');
+      }
+    );
+  }
+
+  $scope.getPastAppointments();
+
 })
 
 .controller('AccountCtrl', function($scope) {
