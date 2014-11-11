@@ -128,7 +128,36 @@ angular.module('starter.controllers', ['ionic'])
   };
 })
 
-.controller('CitasCtrl', function($scope, $ionicModal) {
+.controller('CitasCtrl', function($scope, $ionicModal, $http) {
+
+  $scope.currentAppointments = [];
+
+  $scope.getAppointments = function() {
+    var date = new Date();
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    if(day < 10) {
+        day = '0' + day;
+    }
+    if(month < 10) {
+        month = '0' + month;
+    }
+
+    var today = year + '-' + month + '-' + day;
+    $http.get('http://bookiao-api.herokuapp.com/appointments/?day='+today+'&'+$scope.user.userType+'='+$scope.user.id+'&ordering=time').
+      success(function(data, status) {
+        $scope.currentAppointments = data.results;
+        console.log(data);
+      }).
+      error(function(data, status) {
+        console.log('Error buscando citas.');
+      });
+
+  }
+
+  $scope.getAppointments();
+
 })
 
 .controller('FriendsCtrl', function($scope) {
