@@ -1,6 +1,6 @@
-<ion-view title="Nov 11">
+<ion-view title="{{ currentDate.date }}">
   <ion-nav-buttons side="left">
-    <a class="button button-icon ion-calendar"></a>
+    <a ng-click="showPopup()" class="button button-icon ion-calendar"></a>
   </ion-nav-buttons>
   <ion-content class="padding">
     <div class="card" ng-repeat="appointment in currentAppointments">
@@ -15,4 +15,8 @@
       </div>
     </div>
   </ion-content>
+
+  <script id="date-picker.html" type="text/ng-template">
+    <input type="date" ng-model="currentDate.date">
+  </script>
 </ion-view>

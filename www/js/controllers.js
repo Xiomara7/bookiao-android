@@ -45,6 +45,7 @@ angular.module('starter.controllers', ['ionic'])
 })
 
 .controller('TabCtrl', function($scope, $ionicModal, $location, $http) {
+  // Modal to create a booking
   $ionicModal.fromTemplateUrl('create-booking.html', {
     scope: $scope,
     animation: 'slide-in-up'
@@ -128,24 +129,12 @@ angular.module('starter.controllers', ['ionic'])
   };
 })
 
-.controller('CitasCtrl', function($scope, $http) {
+.controller('CitasCtrl', function($scope, $http, $ionicPopup) {
 
   $scope.currentAppointments = [];
 
   $scope.getAppointments = function() {
-    var date = new Date();
-    var day = date.getDate();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-    if(day < 10) {
-        day = '0' + day;
-    }
-    if(month < 10) {
-        month = '0' + month;
-    }
-
-    var today = year + '-' + month + '-' + day;
-    $http.get('http://bookiao-api.herokuapp.com/appointments/?day='+today+'&'+$scope.user.userType+'='+$scope.user.id+'&ordering=time').
+    $http.get('http://bookiao-api.herokuapp.com/appointments/?day='+$scope.currentDate.date+'&'+$scope.user.userType+'='+$scope.user.id+'&ordering=time').
       success(function(data, status) {
         $scope.currentAppointments = data.results;
       }).
@@ -156,7 +145,42 @@ angular.module('starter.controllers', ['ionic'])
 
   }
 
+  var date = new Date();
+  var day = date.getDate();
+  var month = date.getMonth() + 1;
+  var year = date.getFullYear();
+  if(day < 10) {
+      day = '0' + day;
+  }
+  if(month < 10) {
+      month = '0' + month;
+  }
+
+  $scope.currentDate = { 'date': year + '-' + month + '-' + day };
+
   $scope.getAppointments();
+
+
+  // Popup to select a date
+  $scope.showPopup = function() {
+    var myPopup = $ionicPopup.show({
+      templateUrl: 'date-picker.html',
+      title: 'Seleccione la fecha',
+      scope: $scope,
+      buttons: [
+        { text: 'Cancelar' },
+        {
+          text: '<b>Guardar</b>',
+          type: 'button-positive',
+          onTap: function(e) {
+            return $scope.currentDate.date;
+          }
+        },
+      ]
+    }).then(function(res) {
+      $scope.getAppointments();
+    });
+  };
 
 })
 
@@ -165,7 +189,7 @@ angular.module('starter.controllers', ['ionic'])
   $scope.pastAppointments = [];
 
   $scope.getPastAppointments = function() {
-    $http.get('http://bookiao-api.herokuapp.com/appointments/?'+$scope.user.userType+'='+$scope.user.id+'&ordering=time').
+    $http.get('http://bookiao-api.herokuapp.com/appointments/?'+$scope.user.userType+'='+$scope.user.id+'&ordering=day').
       success(function(data, status) {
         $scope.pastAppointments = data.results;
         console.log(data);
