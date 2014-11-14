@@ -204,7 +204,25 @@ angular.module('starter.controllers', ['ionic'])
 
 })
 
-.controller('AccountCtrl', function($scope) {
+.controller('AccountCtrl', function($scope, Business) {
+  console.log($scope.user);
+  $scope.editMode = false;
+
+  $scope.toggleEditMode = function() {
+    $scope.editMode = true;
+  }
+
+  $scope.quitEditMode = function() {
+    $scope.editMode = false;
+  }
+
+  // Populates the business select input
+  $scope.businesses = [];
+  var handleSuccess = function(data, status) {
+    $scope.businesses = data.results;
+    console.log($scope.businesses);
+  }
+  Business.all().success(handleSuccess);
 })
 
 // Abstract control for registration that handles all of the actual registration
