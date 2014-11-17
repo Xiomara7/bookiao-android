@@ -213,7 +213,6 @@ angular.module('starter.controllers', ['ionic'])
     $http.get('http://bookiao-api.herokuapp.com/appointments/?'+$scope.user.userType+'='+$scope.user.id+'&ordering=day').
       success(function(data, status) {
         $scope.pastAppointments = data.results;
-        console.log(data);
       }).
       error(function(data, status) {
         console.log('Error buscando citas pasadas.');
