@@ -161,6 +161,25 @@ angular.module('starter.controllers', ['ionic'])
   $scope.getAppointments();
 
 
+  $scope.parseDate = function(date){
+
+    var months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", 
+    "Sep", "Oct", "Nov", "Dic"];
+
+    var dateS = date.split("-");
+
+    var month = parseInt(dateS[1]);
+
+    month = months[month-1];
+
+    var newDate = month + " " + dateS[2] + ", " + dateS[0];
+
+    return newDate;
+  }
+
+  $scope.parsedCurrentDate = $scope.parseDate($scope.currentDate.date);
+
+
   // Popup to select a date
   $scope.showPopup = function() {
     var myPopup = $ionicPopup.show({
@@ -179,6 +198,8 @@ angular.module('starter.controllers', ['ionic'])
       ]
     }).then(function(res) {
       $scope.getAppointments();
+        $scope.parsedCurrentDate = $scope.parseDate($scope.currentDate.date);
+
     });
   };
 
