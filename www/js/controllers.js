@@ -44,7 +44,7 @@ angular.module('starter.controllers', ['ionic'])
 
 })
 
-.controller('TabCtrl', function($scope, $ionicModal, $location, $http) {
+.controller('TabCtrl', function($scope, $ionicModal, $location, $http, $filter) {
   // Modal to create a booking
   $ionicModal.fromTemplateUrl('create-booking.html', {
     scope: $scope,
@@ -117,6 +117,8 @@ angular.module('starter.controllers', ['ionic'])
       $scope.booking.employee = $scope.user.name;
     }
     $scope.booking.services = [$scope.booking.services];
+
+    $scope.booking.time = $filter('date')($scope.booking.day+'T'+$scope.booking.time, 'hh:mm a');
 
     $http.post('https://bookiao-api.herokuapp.com/appointments/', $scope.booking, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}}).
       success(function(data, status) {
