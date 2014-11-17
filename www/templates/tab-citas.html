@@ -15,6 +15,7 @@
           La cita comienza a las {{ appointment.time }} <br>
           <span ng-repeat="service in appointment.services"> {{ service }} </span> <br>
         </small>
+        <a href="tel:+1{{ appointment.phone_number }}">Llamar</a> <br>
 
       </div>
     </div>

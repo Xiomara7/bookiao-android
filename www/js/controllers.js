@@ -113,8 +113,8 @@ angular.module('starter.controllers', ['ionic'])
   $scope.createBooking = function() {
     if ($scope.user.userType == 'client') {
       $scope.booking.client = $scope.user.name;
-    } else {
-      $scope.booking.employees = $scope.user.name;
+    } else if ($scope.user.userType == 'employee') {
+      $scope.booking.employee = $scope.user.name;
     }
     $scope.booking.services = [$scope.booking.services];
     console.log($scope.booking);
@@ -129,7 +129,7 @@ angular.module('starter.controllers', ['ionic'])
   };
 })
 
-.controller('CitasCtrl', function($scope, $http, $ionicPopup) {
+.controller('CitasCtrl', function($scope, $http, $ionicPopup, Client, Employee) {
 
   $scope.currentAppointments = [];
 
@@ -137,6 +137,11 @@ angular.module('starter.controllers', ['ionic'])
     $http.get('http://bookiao-api.herokuapp.com/appointments/?day='+$scope.currentDate.date+'&'+$scope.user.userType+'='+$scope.user.id+'&ordering=time').
       success(function(data, status) {
         $scope.currentAppointments = data.results;
+        if ($scope.user.userType == 'employee') {
+          Client.all().success($scope.addPhoneNumbers);
+        } else {
+          Employee.all().success($scope.addPhoneNumbers);
+        }
       }).
       error(function(data, status) {
         console.log('Error buscando citas del día.');
@@ -146,7 +151,23 @@ angular.module('starter.controllers', ['ionic'])
       }
     );
 
-  }
+  };
+
+  $scope.addPhoneNumbers = function(data, status) {
+    for (var i = 0; i < $scope.currentAppointments.length; i++) {
+      for (var j = 0; j < data.results.length; j++) {
+        if ($scope.user.userType == 'employee') {
+          if (data.results[j].name == $scope.currentAppointments[i].client) {
+            $scope.currentAppointments[i]['phone_number'] = data.results[j]['phone_number']
+          }
+        } else if ($scope.user.userType == 'client') {
+          if (data.results[j].name == $scope.currentAppointments[i].employee) {
+            $scope.currentAppointments[i]['phone_number'] = data.results[j]['phone_number']
+          }
+        }
+      }
+    }
+  };
 
   var date = new Date();
   var day = date.getDate();
