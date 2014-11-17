@@ -140,6 +140,9 @@ angular.module('starter.controllers', ['ionic'])
       }).
       error(function(data, status) {
         console.log('Error buscando citas del día.');
+      }).
+      finally(function() {
+        $scope.$broadcast('scroll.refreshComplete');
       }
     );
 
@@ -195,6 +198,8 @@ angular.module('starter.controllers', ['ionic'])
       }).
       error(function(data, status) {
         console.log('Error buscando citas pasadas.');
+      }).finally(function() {
+        $scope.$broadcast('scroll.refreshComplete');
       }
     );
   }

@@ -1,5 +1,9 @@
 <ion-view title="Historial">
   <ion-content class="padding">
+    <ion-refresher
+      pulling-text="Actualizando citas"
+      on-refresh="getPastAppointments()">
+    </ion-refresher>
     <div class="card" ng-repeat="appointment in pastAppointments">
       <div class="item item-text-wrap">
         <span ng-if="user.userType == 'employee'"> {{ appointment.client }}</span> <br>

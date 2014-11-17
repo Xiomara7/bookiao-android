@@ -3,6 +3,10 @@
     <a ng-click="showPopup()" class="button button-icon ion-calendar"></a>
   </ion-nav-buttons>
   <ion-content class="padding">
+    <ion-refresher
+      pulling-text="Actualizando citas"
+      on-refresh="getAppointments()">
+    </ion-refresher>
     <div class="card" ng-repeat="appointment in currentAppointments">
       <div class="item item-text-wrap">
         <span ng-if="user.userType == 'employee'"> {{ appointment.client }}</span> <br>
