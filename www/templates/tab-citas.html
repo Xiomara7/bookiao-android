@@ -14,6 +14,20 @@
 
       </div>
     </div>
+
+    <div ng-show="!currentAppointments.length" style="text-align:center;">
+      <br>
+      <h2 style="color:#323C3E;">Bookealo</h2>
+      <p style="color:#323C3E;">No tienes citas para hoy. Crea una cita.</p>
+
+      <br>
+      <center>
+        
+        <a ng-click="openModal()" class="round-button"><h2 class="ion-compose" style="color:white;padding-top:18px;"></h2></a>
+      </center>
+      
+
+    </div>
   </ion-content>
 
   <script id="date-picker.html" type="text/ng-template">
