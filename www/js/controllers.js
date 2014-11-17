@@ -112,9 +112,9 @@ angular.module('starter.controllers', ['ionic'])
 
   $scope.createBooking = function() {
     if ($scope.user.userType == 'client') {
-      $scope.booking.client = $scope.user.id.toString();
+      $scope.booking.client = $scope.user.name;
     } else {
-      $scope.booking.employees = $scope.user.id.toString();
+      $scope.booking.employees = $scope.user.name;
     }
     $scope.booking.services = [$scope.booking.services];
     console.log($scope.booking);
