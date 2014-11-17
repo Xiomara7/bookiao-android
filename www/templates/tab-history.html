@@ -9,7 +9,7 @@
         <span ng-if="user.userType == 'employee'"> {{ appointment.client }}</span> <br>
         <span ng-if="user.userType == 'client'"> {{ appointment.employee }}</span> <br>
         <small>
-          {{ appointment.day }} a las {{ appointment.time }} <br>
+          {{ parseDate(appointment.day) }} a las {{ appointment.time }} <br>
           <span ng-repeat="service in appointment.services"> - {{ service }} <br> </span>
         </small>
 

@@ -1,4 +1,4 @@
-<ion-view title="{{ currentDate.date }}">
+<ion-view title="{{ parsedCurrentDate }}">
   <ion-nav-buttons side="left">
     <a ng-click="showPopup()" class="button button-icon ion-calendar"></a>
   </ion-nav-buttons>
@@ -18,6 +18,20 @@
         <a href="tel:+1{{ appointment.phone_number }}">Llamar</a> <br>
 
       </div>
+    </div>
+
+    <div ng-show="!currentAppointments.length" style="text-align:center;">
+      <br>
+      <h2 style="color:#323C3E;">Bookealo</h2>
+      <p style="color:#323C3E;">No tienes citas para hoy. Crea una cita.</p>
+
+      <br>
+      <center>
+        
+        <a ng-click="openModal()" class="round-button"><h2 class="ion-compose" style="color:white;padding-top:18px;"></h2></a>
+      </center>
+      
+
     </div>
   </ion-content>
 
