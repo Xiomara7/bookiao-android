@@ -44,7 +44,7 @@ angular.module('starter.controllers', ['ionic'])
 
 })
 
-.controller('TabCtrl', function($scope, $ionicModal, $location, $http) {
+.controller('TabCtrl', function($scope, $ionicModal, $location, $http, $filter) {
   // Modal to create a booking
   $ionicModal.fromTemplateUrl('create-booking.html', {
     scope: $scope,
@@ -117,7 +117,8 @@ angular.module('starter.controllers', ['ionic'])
       $scope.booking.employee = $scope.user.name;
     }
     $scope.booking.services = [$scope.booking.services];
-    console.log($scope.booking);
+
+    $scope.booking.time = $filter('date')($scope.booking.day+'T'+$scope.booking.time, 'hh:mm a');
 
     $http.post('https://bookiao-api.herokuapp.com/appointments/', $scope.booking, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}}).
       success(function(data, status) {
@@ -187,7 +188,7 @@ angular.module('starter.controllers', ['ionic'])
 
   $scope.parseDate = function(date){
 
-    var months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", 
+    var months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago",
     "Sep", "Oct", "Nov", "Dic"];
 
     var dateS = date.split("-");
@@ -233,7 +234,7 @@ angular.module('starter.controllers', ['ionic'])
 
   $scope.parseDate = function(date){
 
-    var months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", 
+    var months = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago",
     "Sep", "Oct", "Nov", "Dic"];
 
     var dateS = date.split("-");
@@ -266,25 +267,45 @@ angular.module('starter.controllers', ['ionic'])
 
 })
 
-.controller('AccountCtrl', function($scope, Business) {
-  console.log($scope.user);
+.controller('AccountCtrl', function($scope, $http, Business) {
   $scope.editMode = false;
 
   $scope.toggleEditMode = function() {
     $scope.editMode = true;
   }
 
-  $scope.quitEditMode = function() {
-    $scope.editMode = false;
+  $scope.save = function() {
+    $scope.user.business = $scope.selectedBusiness.business.id;
+    console.log($scope.selectedBusiness);
+    $http.put('http://bookiao-api.herokuapp.com/' + $scope.user.userType + 's/' + $scope.user.id + '/', $scope.user, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}}).
+      // On success redirect to the home page
+      success(function(data, status, headers, config) {
+      $http.get('http://bookiao-api.herokuapp.com/user-type/?email=' + $scope.user.email).
+        success(function(data, status) {
+          alert('Su perfil se guardo exitosamente.');
+          delete window.localStorage['user'];
+          window.localStorage['user'] = JSON.stringify(data);
+          $scope.editMode = false;
+        }).
+        error(function(data, status) {
+          alert('Error actualizando al perfil.');
+        })
+      }).
+      error(function(data, status, headers, config) {
+        alert('Error guardando el perfil.');
+      });
   }
 
   // Populates the business select input
   $scope.businesses = [];
+  $scope.selectedBusiness = {};
   var handleSuccess = function(data, status) {
     $scope.businesses = data.results;
     console.log($scope.businesses);
   }
   Business.all().success(handleSuccess);
+
+
 })
 
 // Abstract control for registration that handles all of the actual registration
@@ -364,7 +385,6 @@ angular.module('starter.controllers', ['ionic'])
   $scope.businesses = [];
   var handleSuccess = function(data, status) {
     $scope.businesses = data.results;
-    console.log($scope.businesses);
   }
   Business.all().success(handleSuccess);
 })
