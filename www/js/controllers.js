@@ -1,10 +1,10 @@
 angular.module('starter.controllers', ['ionic'])
 
-.controller('LoginCtrl', function($scope, $http, $location) {
+.controller('LoginCtrl', function($scope, $location, Helpers) {
 
   // Function that handles login
   $scope.login = function() {
-    $http.post('http://bookiao-api.herokuapp.com/api-token-auth/', {"email": $scope.email, "password": $scope.password}).
+    Helpers.getToken($scope.email, $scope.password).
       success(function(data, status, headers, config) {
         // On success save the token and redirect to home page
         if (status == 200) {
@@ -18,7 +18,7 @@ angular.module('starter.controllers', ['ionic'])
   }
 
   $scope.findUserType = function() {
-    $http.get('http://bookiao-api.herokuapp.com/user-type/?email=' + $scope.email).
+    Helpers.getUserType($scope.email).
       success(function(data, status) {
         window.localStorage['user'] = JSON.stringify(data);
         $scope.login();
@@ -44,7 +44,7 @@ angular.module('starter.controllers', ['ionic'])
 
 })
 
-.controller('TabCtrl', function($scope, $ionicModal, $location, $http, $filter) {
+.controller('TabCtrl', function($scope, $ionicModal, $location, $filter, Employee, Client, Service, Appointment) {
   // Modal to create a booking
   $ionicModal.fromTemplateUrl('create-booking.html', {
     scope: $scope,
@@ -64,7 +64,7 @@ angular.module('starter.controllers', ['ionic'])
   });
 
   $scope.loadEmployees = function() {
-    $http.get('http://bookiao-api.herokuapp.com/employees/').
+    Employee.all().
       success(function(data, status) {
         $scope.employees = data.results;
       }).
@@ -74,7 +74,7 @@ angular.module('starter.controllers', ['ionic'])
   };
 
   $scope.loadClients = function() {
-    $http.get('http://bookiao-api.herokuapp.com/clients/').
+    Client.all().
       success(function(data, status) {
         $scope.clients = data.results;
       }).
@@ -84,7 +84,7 @@ angular.module('starter.controllers', ['ionic'])
   };
 
   $scope.loadServices = function() {
-    $http.get('http://bookiao-api.herokuapp.com/services/').
+    Service.all().
       success(function(data, status) {
         $scope.services = data.results;
         for (var i = 0; i < $scope.services.length; i++) {
@@ -120,7 +120,7 @@ angular.module('starter.controllers', ['ionic'])
 
     $scope.booking.time = $filter('date')($scope.booking.day+'T'+$scope.booking.time, 'hh:mm a');
 
-    $http.post('https://bookiao-api.herokuapp.com/appointments/', $scope.booking, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}}).
+    Appointment.create($scope.booking).
       success(function(data, status) {
         alert('La cita se creo exitosamente.');
       }).
@@ -130,12 +130,16 @@ angular.module('starter.controllers', ['ionic'])
   };
 })
 
-.controller('CitasCtrl', function($scope, $http, $ionicPopup, Client, Employee) {
+.controller('CitasCtrl', function($scope, $ionicPopup, Client, Employee, Appointment) {
 
   $scope.currentAppointments = [];
 
   $scope.getAppointments = function() {
-    $http.get('http://bookiao-api.herokuapp.com/appointments/?day='+$scope.currentDate.date+'&'+$scope.user.userType+'='+$scope.user.id+'&ordering=time').
+    var params = {};
+    params.day = $scope.currentDate.date;
+    params[$scope.user.userType] = $scope.user.id;
+    params.ordering = 'time';
+    Appointment.filter(params).
       success(function(data, status) {
         $scope.currentAppointments = data.results;
         if ($scope.user.userType == 'employee') {
@@ -230,7 +234,7 @@ angular.module('starter.controllers', ['ionic'])
 
 })
 
-.controller('HistoryCtrl', function($scope, $http) {
+.controller('HistoryCtrl', function($scope, Appointment) {
 
   $scope.parseDate = function(date){
 
@@ -251,7 +255,10 @@ angular.module('starter.controllers', ['ionic'])
   $scope.pastAppointments = [];
 
   $scope.getPastAppointments = function() {
-    $http.get('http://bookiao-api.herokuapp.com/appointments/?'+$scope.user.userType+'='+$scope.user.id+'&ordering=day').
+    var params = {};
+    params[$scope.user.userType] = $scope.user.id;
+    params.ordering = 'day';
+    Appointment.filter(params).
       success(function(data, status) {
         $scope.pastAppointments = data.results;
       }).
@@ -267,7 +274,7 @@ angular.module('starter.controllers', ['ionic'])
 
 })
 
-.controller('AccountCtrl', function($scope, $http, Business) {
+.controller('AccountCtrl', function($scope, Business, Employee, Client, Helpers) {
   $scope.editMode = false;
 
   $scope.toggleEditMode = function() {
@@ -276,11 +283,18 @@ angular.module('starter.controllers', ['ionic'])
 
   $scope.save = function() {
     $scope.user.business = $scope.selectedBusiness.business.id;
-    console.log($scope.selectedBusiness);
-    $http.put('http://bookiao-api.herokuapp.com/' + $scope.user.userType + 's/' + $scope.user.id + '/', $scope.user, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}}).
-      // On success redirect to the home page
+
+    var updateFunction;
+    if ($scope.user.userType == 'employee') {
+      updateFunction = Employee.update;
+    } else if ($scope.user.userType == 'client') {
+      updateFunction = Client.update;
+    }
+
+    // On success redirect to the home page
+    updateFunction($scope.user).
       success(function(data, status, headers, config) {
-      $http.get('http://bookiao-api.herokuapp.com/user-type/?email=' + $scope.user.email).
+        Helpers.getUserType($scope.user.email).
         success(function(data, status) {
           alert('Su perfil se guardo exitosamente.');
           delete window.localStorage['user'];
@@ -310,7 +324,7 @@ angular.module('starter.controllers', ['ionic'])
 
 // Abstract control for registration that handles all of the actual registration
 // logic. TODO: All sorts of sanity checks and input validations
-.controller('RegisterCtrl', function($scope, $location, $http) {
+.controller('RegisterCtrl', function($scope, $location, Helpers, Business, Client, Employee) {
 
   // Function to go back to login
   $scope.back = function() {
@@ -319,7 +333,7 @@ angular.module('starter.controllers', ['ionic'])
 
   // Function to login after actually creating a user.
   $scope.login = function() {
-    $http.post('http://bookiao-api.herokuapp.com/api-token-auth/', {"email": $scope.user.email, "password": $scope.user.password}).
+    Helpers.getToken($scope.user.email, $scope.user.password).
       success(function(data, status, headers, config) {
         // After sucesful login save the token and create the actual object
         // i.e. Business, Employee or Client
@@ -335,19 +349,19 @@ angular.module('starter.controllers', ['ionic'])
 
   // Function that creates the user in the db.
   $scope.createUser = function() {
-    $http.post('http://bookiao-api.herokuapp.com/register/', $scope.user).
+    Helpers.registerUser($scope.user).
       // On success attempt to login.
-      success($scope.findUserType).
+      success($scope.login).
       error(function(data, status, headers, config) {
         alert('Error creating user. Please contact Christian.');
       });
   }
 
   $scope.findUserType = function() {
-    $http.get('http://bookiao-api.herokuapp.com/user-type/?email=' + $scope.user.email).
+    Helpers.getUserType($scope.user.email).
       success(function(data, status) {
         window.localStorage['user'] = JSON.stringify(data);
-        $scope.login();
+        $location.path("/tab/citas");
       }).
       error(function(data, status) {
         alert('Error encontrando al usuario.');
@@ -357,10 +371,21 @@ angular.module('starter.controllers', ['ionic'])
   // Function that actually creates the object in the server
   // Note: Login must be succesful for this to work.
   $scope.createObject = function() {
-    $http.post($scope.user.objectUrl, $scope.user, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}}).
+
+    var createObjectFunction;
+
+    if ($scope.user.objectType == 'business') {
+      createObjectFunction = Business.create;
+    } else if ($scope.user.objectType == 'employee') {
+      createObjectFunction = Employee.create;
+    } else if ($scope.user.objectType == 'client') {
+      createObjectFunction = Client.create;
+    }
+
+    createObjectFunction($scope.user).
       // On success redirect to the home page
       success(function(data, status, headers, config) {
-        $location.path("/tab/citas");
+        $scope.findUserType();
       }).
       error(function(data, status, headers, config) {
         alert('Error creating object. Please contact Christian.');
@@ -374,12 +399,12 @@ angular.module('starter.controllers', ['ionic'])
 
 // Controller for registering Businesses
 .controller('RegisterBusinessCtrl', function($scope, $location) {
-  $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/businesses/';
+  $scope.user.objectType = 'business';
 })
 
 // Controller for registering Employees
 .controller('RegisterEmployeeCtrl', function($scope, $location, Business) {
-  $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/employees/';
+  $scope.user.objectType = 'employee';
 
   // Populates the business select input
   $scope.businesses = [];
@@ -391,7 +416,7 @@ angular.module('starter.controllers', ['ionic'])
 
 // Controller for registering Clients
 .controller('RegisterClientCtrl', function($scope, $location) {
-  $scope.user.objectUrl = 'http://bookiao-api.herokuapp.com/clients/';
+  $scope.user.objectType = 'client';
 });
 
 
