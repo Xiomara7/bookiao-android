@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.ionicframework.bookiaoandroid398920" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>bookiao-android</name>
+<widget id="com.ionicframework.bookiaoandroid398920" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>Bookiao</name>
   <description>
-        An Ionic Framework and Cordova project.
+        Bookiao is a simple app that helps you manage your bookings.
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+  <author email="christian.etpr10@gmail.com" href="http://bookiao.com/">
+      H3 at Bookiao
     </author>
   <content src="index.html"/>
   <access origin="*"/>
