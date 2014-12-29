@@ -97,7 +97,11 @@ angular.module('starter.controllers', ['ionic'])
   };
 
   $scope.getTimes = function() {
-    var employee = $scope.booking.employee;
+    if ($scope.user.userType === 'client') {
+      var employee = $scope.booking.employee;
+    } else {
+      var employee = $scope.user.name;
+    }
     var day = $scope.booking.day;
     var service = $scope.booking.services;
 
@@ -140,9 +144,11 @@ angular.module('starter.controllers', ['ionic'])
     Appointment.create($scope.booking).
       success(function(data, status) {
         alert('La cita se creo exitosamente.');
+        $scope.booking.services = $scope.booking.services[0];
       }).
       error(function(data, status) {
         alert('Error creando la cita.');
+        $scope.booking.services = $scope.booking.services[0];
       });
   };
 })
