@@ -44,7 +44,7 @@ angular.module('starter.controllers', ['ionic'])
 
 })
 
-.controller('TabCtrl', function($scope, $ionicModal, $location, $filter, Employee, Client, Service, Appointment) {
+.controller('TabCtrl', function($scope, $ionicModal, $location, $filter, Employee, Client, Service, Appointment, Helpers) {
   // Modal to create a booking
   $ionicModal.fromTemplateUrl('create-booking.html', {
     scope: $scope,
@@ -96,6 +96,23 @@ angular.module('starter.controllers', ['ionic'])
       });
   };
 
+  $scope.getTimes = function() {
+    var employee = $scope.booking.employee;
+    var day = $scope.booking.day;
+    var service = $scope.booking.services;
+
+    if (employee !== undefined && day !== undefined && service !== undefined) {
+      Helpers.getAvailableTimes(employee, service, day)
+        .success(function(data, status) {
+          $scope.availableTimes = data['available_times'];
+        }).
+        error(function(data, status) {
+          console.log('Error loading available times');
+        });
+    };
+
+  };
+
   var init = function() {
     if (window.localStorage['token'] === undefined) {
       $location.path("/login");
@@ -118,7 +135,7 @@ angular.module('starter.controllers', ['ionic'])
     }
     $scope.booking.services = [$scope.booking.services];
 
-    $scope.booking.time = $filter('date')($scope.booking.day+'T'+$scope.booking.time, 'hh:mm a');
+    // $scope.booking.time = $filter('date')($scope.booking.day+'T'+$scope.booking.time, 'hh:mm a');
 
     Appointment.create($scope.booking).
       success(function(data, status) {

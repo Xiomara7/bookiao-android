@@ -1,3 +1,5 @@
+var baseUrl = 'https://bookiao-api-staging.herokuapp.com/';
+
 angular.module('starter.services', [])
 
 
@@ -5,11 +7,11 @@ angular.module('starter.services', [])
 
   return {
     all: function() {
-      return $http.get('http://bookiao-api.herokuapp.com/businesses/');
+      return $http.get(baseUrl + 'businesses/');
     },
 
     create: function(user) {
-      return $http.post('http://bookiao-api.herokuapp.com/businesses/', user, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}});
+      return $http.post(baseUrl + 'businesses/', user, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}});
     }
   }
 })
@@ -18,15 +20,15 @@ angular.module('starter.services', [])
 
   return {
     all: function() {
-      return $http.get('http://bookiao-api.herokuapp.com/clients/');
+      return $http.get(baseUrl + 'clients/');
     },
 
     update: function(newClientData) {
-      return $http.put('http://bookiao-api.herokuapp.com/clients/' + newClientData.id + '/', newClientData, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}});
+      return $http.put(baseUrl + 'clients/' + newClientData.id + '/', newClientData, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}});
     },
 
     create: function(user) {
-      return $http.post('http://bookiao-api.herokuapp.com/clients/', user, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}});
+      return $http.post(baseUrl + 'clients/', user, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}});
     }
   }
 })
@@ -35,15 +37,15 @@ angular.module('starter.services', [])
 
   return {
     all: function() {
-      return $http.get('http://bookiao-api.herokuapp.com/employees/');
+      return $http.get(baseUrl + 'employees/');
     },
 
     update: function(newEmployeeData) {
-      return $http.put('http://bookiao-api.herokuapp.com/employees/' + newEmployeeData.id + '/', newEmployeeData, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}});
+      return $http.put(baseUrl + 'employees/' + newEmployeeData.id + '/', newEmployeeData, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}});
     },
 
     create: function(user) {
-      return $http.post('http://bookiao-api.herokuapp.com/employees/', user, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}});
+      return $http.post(baseUrl + 'employees/', user, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}});
     }
   }
 })
@@ -52,7 +54,7 @@ angular.module('starter.services', [])
 
   return {
     all: function() {
-      return $http.get('http://bookiao-api.herokuapp.com/services/');
+      return $http.get(baseUrl + 'services/');
     }
   }
 
@@ -62,15 +64,15 @@ angular.module('starter.services', [])
 
   return {
     all: function() {
-      return $http.get('http://bookiao-api.herokuapp.com/appointments/')
+      return $http.get(baseUrl + 'appointments/')
     },
 
     create: function(appointment) {
-      return $http.post('https://bookiao-api.herokuapp.com/appointments/', appointment, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}})
+      return $http.post(baseUrl + 'appointments/', appointment, {headers: {'Authorization': 'JWT ' + window.localStorage['token']}})
     },
 
     filter: function(params) {
-      return $http.get('http://bookiao-api.herokuapp.com/appointments/', {
+      return $http.get(baseUrl + 'appointments/', {
         params: params
       });
     }
@@ -82,15 +84,19 @@ angular.module('starter.services', [])
 
   return {
     getToken: function(email, password) {
-      return $http.post('http://bookiao-api.herokuapp.com/api-token-auth/', {"email": email, "password": password});
+      return $http.post(baseUrl + 'api-token-auth/', {"email": email, "password": password});
     },
 
     getUserType: function(email) {
-      return $http.get('http://bookiao-api.herokuapp.com/user-type/?email=' + email);
+      return $http.get(baseUrl + 'user-type/?email=' + email);
     },
 
     registerUser: function(user) {
-      return $http.post('http://bookiao-api.herokuapp.com/register/', user);
+      return $http.post(baseUrl + 'register/', user);
+    },
+
+    getAvailableTimes: function(employee, service, day) {
+      return $http.get(baseUrl + 'available-times/?employee=' + employee + '&service=' + service + '&day=' + day);
     }
   }
 
